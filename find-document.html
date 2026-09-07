@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Document — MGO Candoni Accounting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="index.html">MGO Candoni <span>Accounting</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">Menu</button>
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="downloadables.html">Downloadables</a></li>
+        <li><a href="checklist.html">Checklist</a></li>
+        <li><a href="guidelines.html">Guidelines</a></li>
+        <li><a href="find-document.html" class="active">Find Document</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li><a href="updates.html">Updates</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="page-header">
+  <div class="wrap">
+    <div class="eyebrow">Lookup</div>
+    <h1>Find a document</h1>
+    <p>Search by Disbursement Voucher or Liquidation Report number, and optionally filter by fund source (GF / TF / SEF). Status appears first, date second.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap dv-tool">
+
+    <div class="dv-row">
+      <div class="field">
+        <label for="dvInput">DV or LR No.</label>
+        <input id="dvInput" type="text" placeholder="" autocomplete="off">
+      </div>
+      <div class="field narrow">
+        <label for="sourceSelect">Source</label>
+        <select id="sourceSelect">
+          <option value="">Any</option>
+          <option value="GF">GF</option>
+          <option value="TF">TF</option>
+          <option value="SEF">SEF</option>
+        </select>
+      </div>
+      <div>
+        <button id="searchBtn" class="btn" type="button">Search</button>
+      </div>
+    </div>
+
+    <div id="status" class="search-meta" aria-live="polite"></div>
+    <div id="results"></div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="year"></span> MGO Candoni Accounting</span>
+    <span>info@mgocandoniaccounting.org</span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+const SHEET_ID="1NuLeke1Gdi0rQSMMZaSa9w5WUPdHCrBaAS0c-yYiWiQ";
+const SHEET_NAME="Disbursement Voucher Control";
+
+const DV_HEADERS=["DV NO","DV NO.","DV NUMBER","DV #","DVNO","DV","DISBURSEMENT VOUCHER NO","DISBURSEMENT VOUCHER NUMBER"];
+const SOURCE_HEADERS=["SOURCE","FUND","FUND SOURCE","GF/TF/SEF","LABEL","SOURCE FUND"];
+const DATE_HEADERS=["DATE","TRANSACTION DATE","DV DATE","DATE CREATED"];
+const STATUS_HEADERS=["STATUS","REMARKS","STAT","STATE"];
+const FUND_ALIASES={"GENERAL FUND":"GF","TRUST FUND":"TF","SPECIAL EDUCATION FUND":"SEF","SEF":"SEF","GF":"GF","TF":"TF"};
+
+const $=s=>document.querySelector(s);
+function encodeTq(sql){return encodeURIComponent(sql).replace(/%20/g,"+");}
+function parseGviz(t){const s=t.indexOf("{"),e=t.lastIndexOf("}");if(s===-1||e===-1)throw new Error("Unexpected Google response");return JSON.parse(t.slice(s,e+1));}
+function colIndexToLetter(i){let s="";i++;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26);}return s;}
+function normalizeStr(v){return String(v??"").trim().replace(/[\u2010-\u2015]/g,"-");}
+function toCodeFund(v){const up=String(v||"").trim().toUpperCase();return FUND_ALIASES[up]||up;}
+function detectIndexes(cols,wanted){const ups=wanted.map(x=>x.toUpperCase());const hits=[];cols.forEach((c,i)=>{const L=(c.label||"").toUpperCase();const I=(c.id||"").toUpperCase();if(ups.includes(L)||ups.includes(I))hits.push(i);});return hits;}
+function buildWhereClause(cols,dvValue,fundValue){
+  const dvIdxs=detectIndexes(cols,DV_HEADERS);const srcIdxs=detectIndexes(cols,SOURCE_HEADERS);
+  if(dvIdxs.length===0)dvIdxs.push(2);
+  const safeDV=normalizeStr(dvValue).replace(/'/g,"''");
+  const dvPreds=dvIdxs.map(i=>`upper(${colIndexToLetter(i)}) contains upper('${safeDV}')`);
+  let where=`(${dvPreds.join(" or ")})`;
+  if(fundValue&&srcIdxs.length){
+    const code=toCodeFund(fundValue),safeFund=code.replace(/'/g,"''");
+    const srcPreds=srcIdxs.map(i=>`upper(${colIndexToLetter(i)}) = upper('${safeFund}')`);
+    const verbose=Object.keys(FUND_ALIASES).find(k=>FUND_ALIASES[k]===code&&k!==code);
+    if(verbose){const vSafe=verbose.replace(/'/g,"''");srcPreds.push(...srcIdxs.map(i=>`upper(${colIndexToLetter(i)}) = upper('${vSafe}')`));}
+    where+=` and (${srcPreds.join(" or ")})`;
+  }
+  return where;
+}
+
+function formatPHDate(val){
+  if(!val)return"";
+  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  if(typeof val==="number"){const d=new Date((val-25569)*86400000);return `${String(d.getDate()).padStart(2,"0")}-${months[d.getMonth()]}-${d.getFullYear()}`;}
+  if(typeof val==="string"&&/^Date\(/.test(val)){const p=val.match(/\d+/g)?.map(Number)||[];const[y,m,d=1]=p;const dt=new Date(Date.UTC(y,m,d));return `${String(dt.getUTCDate()).padStart(2,"0")}-${months[dt.getUTCMonth()]}-${dt.getUTCFullYear()}`;}
+  if(typeof val==="string"&&/^\d{4}-\d{2}-\d{2}/.test(val)){const d=new Date(val);return `${String(d.getDate()).padStart(2,"0")}-${months[d.getMonth()]}-${d.getFullYear()}`;}
+  return val;
+}
+
+function makeTable(container,cols,rows){
+  const dateIdx=detectIndexes(cols,DATE_HEADERS)[0];
+  const statusIdx=detectIndexes(cols,STATUS_HEADERS)[0];
+  const allIdxs=cols.map((_,i)=>i);const order=[];
+  if(typeof statusIdx==="number")order.push(statusIdx);
+  if(typeof dateIdx==="number"&&dateIdx!==statusIdx)order.push(dateIdx);
+  allIdxs.forEach(i=>{if(!order.includes(i))order.push(i);});
+  const table=document.createElement("table");table.className="table";
+  const thead=document.createElement("thead");const trh=document.createElement("tr");
+  order.forEach(i=>{const th=document.createElement("th");th.textContent=cols[i]?.label||cols[i]?.id||"";trh.appendChild(th);});
+  thead.appendChild(trh);table.appendChild(thead);
+  const tbody=document.createElement("tbody");
+  rows.forEach(r=>{
+    const tr=document.createElement("tr");
+    order.forEach(i=>{
+      const td=document.createElement("td");
+      let v=r.c?.[i]?.v??"";
+      if(typeof dateIdx==="number"&&i===dateIdx)v=formatPHDate(v);
+      if(typeof statusIdx==="number"&&i===statusIdx){
+        const t=String(v).toUpperCase();
+        const span=document.createElement("span");
+        span.className="badge "+(t.includes("OK")||t.includes("RELEASED")||t.includes("CLEARED")?"ok":t.includes("PENDING")||t.includes("FOR ")||t.includes("REVIEW")?"warn":"err");
+        span.textContent=String(v||"").trim();
+        td.appendChild(span);
+      }else td.textContent=v;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  container.innerHTML="";
+  container.appendChild(table);
+}
+
+async function getColumns(sheetName){
+  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}&headers=1&tq=${encodeTq("select * limit 0")}`;
+  const res=await fetch(url,{cache:"no-store"});
+  if(res.status==401||res.status==403)throw new Error("No access to sheet (set Anyone with link → Viewer)");
+  const txt=await res.text();const json=parseGviz(txt);
+  if(!json.table?.cols?.length)throw new Error("No header row found. Check tab name & headers.");
+  return json.table.cols;
+}
+
+async function runSearch(){
+  const dv=$('#dvInput').value.trim(),src=$('#sourceSelect').value;
+  const status=$('#status'),results=$('#results');
+  results.innerHTML="";status.textContent="";
+  if(!dv){status.textContent="Please enter a DV No.";return;}
+  try{
+    status.textContent=`Searching "${SHEET_NAME}"…`;
+    const cols=await getColumns(SHEET_NAME);
+    const where=buildWhereClause(cols,dv,src);
+    const tq=`select * where ${where}`;
+    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&tq=${encodeTq(tq)}`;
+    const res=await fetch(url,{cache:"no-store"});
+    if(res.status==401||res.status==403)throw new Error("No access to sheet (set to Anyone with link → Viewer).");
+    const txt=await res.text();const json=parseGviz(txt);const rows=json.table?.rows||[];
+    if(!rows.length){status.textContent="No records found.";return;}
+    status.textContent=`Found ${rows.length} record(s).`;
+    makeTable(results,json.table.cols,rows);
+  }catch(err){console.error(err);status.textContent="Error: "+err.message;}
+}
+
+$('#searchBtn').addEventListener('click',runSearch);
+$('#dvInput').addEventListener('keydown',e=>{if(e.key==='Enter')runSearch();});
+</script>
+</body>
+</html>

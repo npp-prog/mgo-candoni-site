@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Updates — MGO Candoni Accounting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="index.html">MGO Candoni <span>Accounting</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">Menu</button>
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="downloadables.html">Downloadables</a></li>
+        <li><a href="checklist.html">Checklist</a></li>
+        <li><a href="guidelines.html">Guidelines</a></li>
+        <li><a href="find-document.html">Find Document</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li><a href="updates.html" class="active">Updates</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="page-header">
+  <div class="wrap">
+    <div class="eyebrow">Internal</div>
+    <h1>Updates</h1>
+    <p>LGU internal rules, memos, and office circulars, newest first.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="filter-bar" data-target="updates-list">
+      <button class="filter-chip active" data-cat="all">All</button>
+      <button class="filter-chip" data-cat="memo">Memo</button>
+      <button class="filter-chip" data-cat="circular">Circular</button>
+      <button class="filter-chip" data-cat="advisory">Advisory</button>
+    </div>
+
+    <div class="item-list" id="updates-list">
+
+      <div class="item-row" data-cat="circular">
+        <div class="meta">
+          <h3>Internal Circular 2026-04 — Updated Liquidation Deadline</h3>
+          <p>Revises the deadline for liquidating cash advances to 30 days after the purpose is served.</p>
+        </div>
+        <span class="cat">Circular</span>
+        <a class="filetype" href="updates/circular-2026-04.pdf" download>PDF &darr;</a>
+      </div>
+
+      <div class="item-row" data-cat="memo">
+        <div class="meta">
+          <h3>Office Memo — Cut-off Schedule for Payroll Submission</h3>
+          <p>Sets the monthly cut-off date for submitting Daily Time Records to this office.</p>
+        </div>
+        <span class="cat">Memo</span>
+        <a class="filetype" href="updates/memo-payroll-cutoff.pdf" download>PDF &darr;</a>
+      </div>
+
+      <div class="item-row" data-cat="advisory">
+        <div class="meta">
+          <h3>Advisory — Revised Disbursement Voucher Format</h3>
+          <p>Notifies all offices of a revised DV template; old format accepted until further notice.</p>
+        </div>
+        <span class="cat">Advisory</span>
+        <a class="filetype" href="updates/advisory-dv-format.pdf" download>PDF &darr;</a>
+      </div>
+
+      <div class="item-row" data-cat="circular">
+        <div class="meta">
+          <h3>Internal Circular 2026-02 — Procurement Threshold Reminder</h3>
+          <p>Reiterates canvass requirements for purchases below the small-value procurement threshold.</p>
+        </div>
+        <span class="cat">Circular</span>
+        <a class="filetype" href="updates/circular-2026-02.pdf" download>PDF &darr;</a>
+      </div>
+
+    </div>
+
+    <p class="tool-intro" style="margin-top:32px;">
+      <strong>Note for the office:</strong> these entries are placeholders. Replace the titles, dates, and file links with
+      your actual memos and circulars as they're issued — this list is meant to grow over time.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="year"></span> MGO Candoni Accounting</span>
+    <span>info@mgocandoniaccounting.org</span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
