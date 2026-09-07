@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBM Compendium 2023 — MGO Candoni Accounting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="index.html">MGO Candoni <span>Accounting</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">Menu</button>
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="downloadables.html">Downloadables</a></li>
+        <li><a href="checklist.html">Checklist</a></li>
+        <li><a href="guidelines.html" class="active">Guidelines</a></li>
+        <li><a href="find-document.html">Find Document</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li><a href="updates.html">Updates</a></li>
+        <li><a href="audits.html">Audits</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="page-header">
+  <div class="wrap">
+    <div class="eyebrow">Guidelines — DBM</div>
+    <h1>DBM Compendium 2023</h1>
+    <p>Budget circulars and joint circulars, clustered into the 16 categories DBM organizes them under. Search narrows every cluster at once.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="search-box">
+      <input type="text" id="dbm-search" placeholder="Search e.g. “bonus”, “PERA”, “SEF”, “motor vehicles”">
+      <button id="dbm-search-btn">Search</button>
+    </div>
+    <p class="search-meta" id="dbm-meta"></p>
+
+    <div id="dbm-clusters"></div>
+
+    <p class="tool-intro" style="margin-top:32px;">
+      <strong>Note for the office:</strong> two clusters — MOOE and Other Budgetary Requirements — only had sub-topic
+      folders with no files directly inside them when this was built, so those sub-topics link straight into Drive
+      instead of a specific document. Personal Services (PS) has ~24 further sub-folders in Drive beyond the 25 files
+      listed here, in case anything's filed only inside those.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="year"></span> MGO Candoni Accounting</span>
+    <span>info@mgocandoniaccounting.org</span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  // DBM Compendium 2023 — pulled from the office's Google Drive folder.
+  // kind "files": items are documents (title, sizeMB, id, type). Link = direct download.
+  // kind "subfolders": items are sub-topics with no file found directly inside; link = Drive folder.
+  var COMPENDIUM = [
+    { key:"01", title:"Personal Services (PS)", kind:"files", items:[
+      {title:"Retirement and Life Insurance Contributions — Sec. 11 IRR of RA 8291", sizeMB:0.2, type:"PDF", id:"1qkpIrhfpCvtDyg0Miuo5vNbeoKQJR4ej"},
+      {title:"Employees' Compensation Commission — P.D. 626-1974", sizeMB:0.2, type:"PDF", id:"19ul8jBACdcjgkAvj9qEhZJU_1PfbfaDk"},
+      {title:"Pag-IBIG Contributions — HDMF Circular 274", sizeMB:0.8, type:"PDF", id:"1gVvxgjdHzG25wzgbDP7kqDL1-XXhlr9S"},
+      {title:"PhilHealth Contributions — CL 2022-6", sizeMB:0.9, type:"PDF", id:"1CwVCSNPaMA7Ne2pqrJxO5Lf4GgZi7ONC"},
+      {title:"Monetization of Leave Credits — CSC-DBM JC 2-97", sizeMB:0.9, type:"PDF", id:"1e76taPWputup3l7YORNF1XeUdoS6a3yc"},
+      {title:"Compensation of Ex-Officio Members — LBC 66-A", sizeMB:0.8, type:"PDF", id:"1J3uWgtoNuq2S8DC4N5-pvbcxf3aqVJJu"},
+      {title:"Step Increments Due to Meritorious Performance — JC 2012-1", sizeMB:0.4, type:"PDF", id:"1-anNnDF9MWii68KoZUKF0UUC3cRkR1rn"},
+      {title:"Anniversary Bonus — LBC 65", sizeMB:2.4, type:"PDF", id:"1dfcH0zSztieweFGN3LlNXQOf4Em9gd8f"},
+      {title:"Terminal Leave — BC 2013-1A (Clarification)", sizeMB:0.1, type:"PDF", id:"1Y6HOHPY9VoLpnnULnHFBoNgRR6SXQ855"},
+      {title:"Terminal Leave / Retirement Gratuity — BC 2013-1", sizeMB:0.7, type:"PDF", id:"1oAE1LbHKqbb2e9B2X8OSVqCdXxvHVhRY"},
+      {title:"Loyalty Award — CSC MC 6-2002", sizeMB:0.2, type:"PDF", id:"1_w08A8WzLjV96IYv_0UybTzubPN7oFds"},
+      {title:"Step Increments for Elective Officials — JC 2016", sizeMB:0.2, type:"PDF", id:"1v8sU7vzISwZDC_rAmoeqqYJ17_Hs24CT"},
+      {title:"Overtime Pay — CSC-DBM JC 2-2015", sizeMB:0.2, type:"PDF", id:"1OkaiGcJ2LrG_mfZ9VBbPzEZWPS6knWIg"},
+      {title:"Night Shift Differential — IRR of RA 11701", sizeMB:1.0, type:"PDF", id:"1bEJLWFqnKlDlFhJ0BkjYUL6KeYj_4Wtl"},
+      {title:"Productivity Enhancement Incentive (PEI) — BC 2017-4", sizeMB:5.0, type:"PDF", id:"1kL5uPkKFQMLTJQBtzVJJYllrTe87B9ue"},
+      {title:"Magna Carta Benefits — Public Social Workers — DBM-DSWD JC 1, s. 2018", sizeMB:3.2, type:"PDF", id:"1j_lUI6Wxn1e4KH7-dCwsSs-QyRZXNTYm"},
+      {title:"Year-End Bonus and Cash Gift — BC 2016-4", sizeMB:16.0, type:"PDF", id:"1eNemUil49t61rSVERBqXasgCgMy0o_YV"},
+      {title:"RATA — Section 64, RA No. 11936 (GAA)", sizeMB:0.3, type:"PNG", id:"10fpQ2HHZl6aPgFZbPXgqFhcifeL4gAWF"},
+      {title:"Magna Carta Benefits — Public Health Workers — DBM-DOH JC 1, s. 2016", sizeMB:4.2, type:"PDF", id:"1ISjoYYxS_4Bo1olqehyFZ-EUmp8zorQq"},
+      {title:"General Provisions, Fiscal Year 2023 (GAA)", sizeMB:0.4, type:"PDF", id:"1n52a6orGPqyTdyL0mAIadLhyHMI_L97E"},
+      {title:"Mid-Year Bonus — BC 2019-4 (Clarification for Scholars)", sizeMB:0.7, type:"PDF", id:"18PkKxq8LL5ar-RdCC-oveKvRK0D314DY"},
+      {title:"Magna Carta Benefits — Public Health Workers — DBM-DOH JC 1, s. 2012", sizeMB:0.9, type:"PDF", id:"13IH0cEMg8OkZYn1_IAiHW9S_lFvZ-VMi"},
+      {title:"Mid-Year Bonus — BC 2017-2", sizeMB:3.4, type:"PDF", id:"1UlP-kl1h_ng2c7c0FpMtGtXmReqFmXPv"},
+      {title:"RATA — LBC 103", sizeMB:0.6, type:"PDF", id:"1TyfJd_K2k4E0VfJ8w_dpa6MmGJhdBVU8"},
+      {title:"PERA — BC 2009-3", sizeMB:0.9, type:"PDF", id:"11ceMWyAtoPtVuMg672dRoGrnE62VlORY"}
+    ]},
+    { key:"02", title:"Maintenance and Other Operating Expenditures (MOOE)", kind:"subfolders", items:[
+      {title:"Official Travel", driveId:"17TAt2Oqj9ado7SzRGRDfG8g0JYhI7t-7"},
+      {title:"Attendance to Conventions, Seminars, Conferences, Symposia", driveId:"17bxYBDOJb-J0GL4GWuIJQfeKq8S9k6XX"},
+      {title:"Confidential Expenses", driveId:"13-OPUHnxltmOLbLLBH9CTB75WJ6nDgMb"},
+      {title:"Free Quarters Allowance", driveId:"1rl333Y_GNAwIRq7lDceLco8e53vefXA_"}
+    ]},
+    { key:"03", title:"Capital Outlay", kind:"files", items:[
+      {title:"Motor Vehicles — BC 2022-1", sizeMB:16.8, type:"PDF", id:"1KLf5k6i-acoNc4mXn23z9ZxApe3D--Aw"},
+      {title:"Motor Vehicles — AO 14-2018", sizeMB:2.7, type:"PDF", id:"1BomsOEOBXMMgGKDycN-8Vwg_k0Ob7nbv"},
+      {title:"Motor Vehicles — BC 2022-1A", sizeMB:19.7, type:"PDF", id:"1142P2daqyiW8II9OEu9Ve7wVZQkKQSA-"}
+    ]},
+    { key:"04", title:"Special Purpose Appropriations", kind:"files", items:[
+      {title:"5% LDRRMF — NDRRMC-DBM-DILG JC 2013-1", sizeMB:0.4, type:"PDF", id:"1xiJ7X8aPrLwXViYLera_aAOxqG_tqwhq"},
+      {title:"5% LDRRMF — NDRRMC-DBM-DILG JC 2014-1", sizeMB:8.7, type:"PDF", id:"1dKFtQ0riagT6rKc6geiabRB9yzekt1f1"},
+      {title:"20% Development Fund — DBM-DOF-DILG JMC 1 (2020)", sizeMB:2.0, type:"PDF", id:"1ut_d9jdPJVwSNNdC1Gd1LTlvaxHaTT5L"},
+      {title:"20% Development Fund — DBM-DOF-DILG JMC 01 (2023)", sizeMB:1.2, type:"PDF", id:"1H06bF62XdHSa463FzxIKmC7uf9Nz6_Br"}
+    ]},
+    { key:"05", title:"Other Budgetary Requirements", kind:"subfolders", items:[
+      {title:"Gender and Development", driveId:"1fk0ERQDO8GTmwdKxvQQOeEphWoHuOs0A"},
+      {title:"Local Council for the Protection of Children", driveId:"1jYf1OC1hwlvKBJdBYFjObN78Ryenv4mU"},
+      {title:"Senior Citizens", driveId:"1sGgrd8BfuPH8kjn_a57-1mh84N3rAaXZ"},
+      {title:"Person with Disability", driveId:"13BpUhcx-o-YRhmlpr6aFe6EvPij8f9oY"},
+      {title:"HIV/AIDS", driveId:"1Bi7aDo_Yy3-6JK3GAZr98mUarolCwa7K"},
+      {title:"Anti-Illegal Drugs", driveId:"1rF2Y4uqCRhobctmMJ5IrujIIJlrTUkJ5"},
+      {title:"Solo Parent", driveId:"1mbAZ1FHYviZ1xE3E7HaRsiZlIKE8H3Qs"}
+    ]},
+    { key:"06", title:"Budgetary Limitations", kind:"files", items:[
+      {title:"PS Limitation — LBC No. 145-A", sizeMB:0.3, type:"PDF", id:"1MXRs1Qhn7BBRR5UheY2d5Y8KAcovSWzJ"},
+      {title:"PS Limitation — LBC No. 145", sizeMB:3.8, type:"PDF", id:"1gsBGCxtWhOORNA30DkKWdkpGa2GI9czy"}
+    ]},
+    { key:"07", title:"Annual Investment Program", kind:"files", items:[
+      {title:"AIP — JMC 1-2016", sizeMB:24.8, type:"PDF", id:"1_v5YAjlQ6vTWlpBFrnro8CbVhhEX2Kax"}
+    ]},
+    { key:"08", title:"Climate Change Expenditure Tagging", kind:"files", items:[
+      {title:"CCET — JMC DBM-CCC-DILG 2015-01", sizeMB:3.6, type:"PDF", id:"1EiDt3RtZilvATM5Rc6ncoB_lgPWzrF18"}
+    ]},
+    { key:"09", title:"Full Devolution (Mandanas-Garcia Ruling)", kind:"files", items:[
+      {title:"IRR of Executive Order 138", sizeMB:21.2, type:"PDF", id:"1v2ChPUfG0p1uQtv8OqrmxxEY5GuEPB_q"}
+    ]},
+    { key:"10", title:"Local Economic Enterprise", kind:"files", items:[
+      {title:"LBC 100-A", sizeMB:2.0, type:"PDF", id:"10QvQOmlsmPrYM3GWHIS3nKiiwqd_ZWY8"},
+      {title:"LBC 100", sizeMB:2.2, type:"PDF", id:"1-kJsI4xnjGgj3Qh4pJisq5elxO0cPXOj"},
+      {title:"LBC 111", sizeMB:2.4, type:"PDF", id:"1YhcItge-ZuZaYFQruCBzmwo6cpOoYnSE"}
+    ]},
+    { key:"11", title:"Internal Audit", kind:"files", items:[
+      {title:"LBC 153", sizeMB:1.3, type:"PDF", id:"1hVvSizy5feXOT0n5QUFXFmcpgexm9u1G"}
+    ]},
+    { key:"12", title:"Special Education Fund (SEF)", kind:"files", items:[
+      {title:"DepEd-DBM-DILG JC 2-2020", sizeMB:2.0, type:"PDF", id:"1FcPT0cNf8a2VHAXduPwBCgI7U854F60o"},
+      {title:"DepEd-DBM-DILG JC 1-2017", sizeMB:8.8, type:"PDF", id:"1LsWDXzfOFOMN8VoXKyi40zjDhZ2aE-VM"},
+      {title:"DepEd-DBM-DILG JC 1-2020", sizeMB:0.7, type:"PDF", id:"1s5-RslM1_1fbXNSwfOgX5FzULVgCXPnj"}
+    ]},
+    { key:"13", title:"Special Health Fund (SHF)", kind:"files", items:[
+      {title:"JMC 2021-0001", sizeMB:6.1, type:"PDF", id:"1ZjZ7Xz0oo14p1Q0veNGn3XIuYl80ioAP"}
+    ]},
+    { key:"14", title:"Local Government Support Fund (LGSF)", kind:"files", items:[
+      {title:"LBC 150 — Financial Assistance (FA)", sizeMB:9.7, type:"PDF", id:"1YzIlbaz_lo076ca6CYbNSxg-XB2Wmct-"},
+      {title:"LBC 150 — Sustainable Barangay Development Program (SBDP)", sizeMB:16.9, type:"PDF", id:"1YLGcqttpXWhjXCTWpTegnrX9HYy-r8gW"}
+    ]},
+    { key:"15", title:"Compensation and Position Classification", kind:"files", items:[
+      {title:"LBC 53-1993", sizeMB:0.2, type:"PDF", id:"1P_onulTDXcOAdHbZmReBnr7XPwUgEy83"},
+      {title:"BC 2019-1", sizeMB:2.2, type:"PDF", id:"1CtbWTg8ItgSu60BCO6Jr49IFrAy5J-ky"}
+    ]},
+    { key:"16", title:"Index of Occupational Services (IOS)", kind:"files", items:[
+      {title:"LBC 137", sizeMB:20.6, type:"PDF", id:"1pAZYIrOHhv7eTYaXUhIwjoJvjAlh9Dac"}
+    ]}
+  ];
+
+  function driveDownload(id) { return "https://drive.google.com/uc?export=download&id=" + id; }
+  function driveFolder(id) { return "https://drive.google.com/drive/folders/" + id; }
+
+  var container = document.getElementById('dbm-clusters');
+  var meta = document.getElementById('dbm-meta');
+
+  function renderClusters(filterTerm) {
+    container.innerHTML = '';
+    var term = (filterTerm || '').trim().toLowerCase();
+    var totalVisible = 0;
+    var clustersShown = 0;
+
+    COMPENDIUM.forEach(function (cluster) {
+      var matchingItems = cluster.items.filter(function (item) {
+        if (!term) return true;
+        var haystack = (cluster.title + ' ' + item.title).toLowerCase();
+        return haystack.indexOf(term) !== -1;
+      });
+      if (matchingItems.length === 0) return;
+
+      clustersShown++;
+      totalVisible += matchingItems.length;
+
+      var details = document.createElement('details');
+      details.className = 'checklist-group';
+      if (term) details.open = true;
+
+      var summary = document.createElement('summary');
+      summary.textContent = cluster.key + '. ' + cluster.title + ' (' + cluster.items.length + ')';
+      details.appendChild(summary);
+
+      var body = document.createElement('div');
+      body.className = 'checklist-body';
+      var list = document.createElement('div');
+      list.className = 'item-list';
+
+      matchingItems.forEach(function (item) {
+        var row = document.createElement('div');
+        row.className = 'item-row';
+        if (cluster.kind === 'files') {
+          row.innerHTML =
+            '<div class="meta"><h3>' + item.title + '</h3><p>' + item.sizeMB + ' MB</p></div>' +
+            '<span class="cat">' + item.type + '</span>' +
+            '<a class="filetype" href="' + driveDownload(item.id) + '" target="_blank" rel="noopener">Download &darr;</a>';
+        } else {
+          row.innerHTML =
+            '<div class="meta"><h3>' + item.title + '</h3><p>No file found directly in this sub-topic</p></div>' +
+            '<span class="cat">Folder</span>' +
+            '<a class="filetype" href="' + driveFolder(item.driveId) + '" target="_blank" rel="noopener">Browse &nearr;</a>';
+        }
+        list.appendChild(row);
+      });
+
+      body.appendChild(list);
+      details.appendChild(body);
+      container.appendChild(details);
+    });
+
+    if (term) {
+      meta.textContent = totalVisible + ' result' + (totalVisible === 1 ? '' : 's') + ' across ' + clustersShown + ' cluster' + (clustersShown === 1 ? '' : 's') + ' for "' + term + '".';
+    } else {
+      var totalDocs = COMPENDIUM.reduce(function (sum, c) { return sum + c.items.length; }, 0);
+      meta.textContent = '16 clusters, ' + totalDocs + ' items total. Click a cluster to open it, or search above.';
+    }
+  }
+
+  document.getElementById('dbm-search').addEventListener('input', function (e) { renderClusters(e.target.value); });
+  document.getElementById('dbm-search-btn').addEventListener('click', function () { renderClusters(document.getElementById('dbm-search').value); });
+
+  renderClusters('');
+</script>
+</body>
+</html>
