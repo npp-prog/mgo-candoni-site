@@ -735,12 +735,12 @@ footer .wrap{
 /* ---- Large launch tile (opens external tool in new tab) ---- */
 .launch-tile{
   display:flex;
-  flex-direction:column;
+  flex-direction:row;
   align-items:center;
-  justify-content:center;
-  gap:14px;
-  width:280px;
-  height:280px;
+  justify-content:space-between;
+  gap:24px;
+  width:100%;
+  padding:40px 44px;
   border:1px solid var(--rule-strong);
   background:var(--paper);
   text-decoration:none;
@@ -748,16 +748,20 @@ footer .wrap{
   transition:background 0.15s ease, border-color 0.15s ease;
 }
 .launch-tile:hover{background:var(--tag-bg); border-color:var(--ink);}
+.launch-tile-text{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
 .launch-tile-icon{
   font-size:34px;
   color:var(--brass);
   line-height:1;
+  flex-shrink:0;
 }
 .launch-tile-title{
   font-family:'Source Serif 4', serif;
-  font-size:20px;
-  text-align:center;
-  padding:0 24px;
+  font-size:22px;
   line-height:1.25;
 }
 .launch-tile-sub{
@@ -766,7 +770,8 @@ footer .wrap{
 }
 
 @media (max-width:640px){
-  .launch-tile{width:100%; height:200px;}
+  .launch-tile{flex-direction:row; padding:28px 24px;}
+  .launch-tile-title{font-size:19px;}
 }
 
 /* Reduced motion */
