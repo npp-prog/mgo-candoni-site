@@ -732,6 +732,43 @@ footer .wrap{
 }
 .ext-link:hover{border-color:var(--ledger-green);}
 
+/* ---- Large launch tile (opens external tool in new tab) ---- */
+.launch-tile{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  width:280px;
+  height:280px;
+  border:1px solid var(--rule-strong);
+  background:var(--paper);
+  text-decoration:none;
+  color:var(--ink);
+  transition:background 0.15s ease, border-color 0.15s ease;
+}
+.launch-tile:hover{background:var(--tag-bg); border-color:var(--ink);}
+.launch-tile-icon{
+  font-size:34px;
+  color:var(--brass);
+  line-height:1;
+}
+.launch-tile-title{
+  font-family:'Source Serif 4', serif;
+  font-size:20px;
+  text-align:center;
+  padding:0 24px;
+  line-height:1.25;
+}
+.launch-tile-sub{
+  font-size:13px;
+  color:var(--charcoal);
+}
+
+@media (max-width:640px){
+  .launch-tile{width:100%; height:200px;}
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto;}
