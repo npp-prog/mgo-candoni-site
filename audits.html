@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Annual Audit Reports — MGO Candoni Accounting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="index.html">MGO Candoni <span>Accounting</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">Menu</button>
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="downloadables.html">Downloadables</a></li>
+        <li><a href="checklist.html">Checklist</a></li>
+        <li><a href="guidelines.html">Guidelines</a></li>
+        <li><a href="find-document.html">Find Document</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li><a href="updates.html">Updates</a></li>
+        <li><a href="audits.html" class="active">Audits</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="page-header">
+  <div class="wrap">
+    <div class="eyebrow">Records</div>
+    <h1>Annual Audit Reports</h1>
+    <p>Candoni's Annual Audit Reports, 2010 through 2024 — complete for every year in that range. Each downloads as a ZIP archive.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="item-list" id="audit-list"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Additional reference documents</h2>
+      <span class="index">Not year-specific Candoni reports</span>
+    </div>
+    <p class="tool-intro" style="margin-bottom:28px;">
+      These two files were in the same folder but aren't Candoni-specific annual reports the way the 15 above are —
+      one is a province-level financial profile, the other looks like a national compilation volume. Included here in
+      case they're useful; let the office know if they should be removed or re-labeled.
+    </p>
+    <div class="item-list" id="extra-list"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="year"></span> MGO Candoni Accounting</span>
+    <span>info@mgocandoniaccounting.org</span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  // Candoni Annual Audit Reports, 2010–2024. Pulled from the office's Google Drive folder.
+  // Each already shares "Anyone with the link → Viewer" (checked the 2010 and 2024 files directly).
+  var AUDITS = [
+    { year: 2024, title: "Candoni Annual Audit Report 2024", type: "ZIP", sizeMB: 12.9, id: "1YVI9ygePQobfzbsOAQjSka8Ca8p4ZA7M" },
+    { year: 2023, title: "Candoni Annual Audit Report 2023", type: "ZIP", sizeMB: 7.6,  id: "1WnT14lcqJ0AJwrx3RCaeA-0HprADrFZc" },
+    { year: 2022, title: "Candoni Annual Audit Report 2022", type: "ZIP", sizeMB: 3.2,  id: "1C9VmZjMvKqKCbFcv3mAd8LD2mfLG03RR" },
+    { year: 2021, title: "Candoni Annual Audit Report 2021", type: "ZIP", sizeMB: 2.0,  id: "1WSCf14c4sEd3lqvt1v27I3DhtGHWVobz" },
+    { year: 2020, title: "Candoni Annual Audit Report 2020", type: "ZIP", sizeMB: 3.2,  id: "1iOJN_16X8_esn-3ilmhOicMRSC7JckIA" },
+    { year: 2019, title: "Candoni Annual Audit Report 2019", type: "ZIP", sizeMB: 7.4,  id: "1aBEcjjVIVn6bHJMqswfPZWk3wh3Di6Eo" },
+    { year: 2018, title: "Candoni Annual Audit Report 2018", type: "ZIP", sizeMB: 3.5,  id: "1mX-XOz7Zbe6KRcD0GouExtvrxObvNTyC" },
+    { year: 2017, title: "Candoni Annual Audit Report 2017", type: "ZIP", sizeMB: 11.1, id: "16ANJW4PMqkdSMzbHJJ01zv9lhij5ZJBm" },
+    { year: 2016, title: "Candoni Annual Audit Report 2016", type: "ZIP", sizeMB: 1.3,  id: "1dvIygAGzqQs3AcyYjnyhk3pwgFR1vQxg" },
+    { year: 2015, title: "Candoni Annual Audit Report 2015", type: "ZIP", sizeMB: 2.2,  id: "1CdaXBelsKQaSABcENxvYv8oHgFPfHPbI" },
+    { year: 2014, title: "Candoni Annual Audit Report 2014", type: "ZIP", sizeMB: 4.4,  id: "17m8kyYfLmfcbmRltCJq9WxAZlE6QtIiM" },
+    { year: 2013, title: "Candoni Annual Audit Report 2013", type: "ZIP", sizeMB: 1.0,  id: "1R3Nugii5xmjj1T43RSLkiKuS9NSeTp_E" },
+    { year: 2012, title: "Candoni Annual Audit Report 2012", type: "ZIP", sizeMB: 7.5,  id: "1fSkDSS5uKSI08ydXm9nlRZs0q4G8jAVx" },
+    { year: 2011, title: "Candoni Annual Audit Report 2011", type: "ZIP", sizeMB: 2.2,  id: "1Qkp61KUm6O_BjicZbKWQjsgWBhnt68vO" },
+    { year: 2010, title: "Candoni Annual Audit Report 2010", type: "ZIP", sizeMB: 0.4,  id: "1bnAOHZNUwN-HrOVpxZuY6zUuQPgTwBhf" }
+  ];
+
+  var EXTRAS = [
+    { title: "AFR.xlsx — Province-level Financial Profile (CY2017)", type: "XLSX", sizeMB: 0.5, id: "1G5CPT3FqXx-hh4bh0VdMhFAjjYeyq7M3" },
+    { title: "2015 AFR — LGUs Volume I (national compilation)", type: "PDF", sizeMB: 11.4, id: "1GV2a7RsRopX1KxloAdpPgN9qYvxQCIcs" }
+  ];
+
+  function driveLink(id) {
+    return "https://drive.google.com/uc?export=download&id=" + id;
+  }
+
+  function renderList(container, items, getTitle) {
+    items.forEach(function (item) {
+      var row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML =
+        '<div class="meta"><h3>' + getTitle(item) + '</h3><p>' + item.sizeMB + ' MB</p></div>' +
+        '<span class="cat">' + item.type + '</span>' +
+        '<a class="filetype" href="' + driveLink(item.id) + '" target="_blank" rel="noopener">Download &darr;</a>';
+      container.appendChild(row);
+    });
+  }
+
+  renderList(document.getElementById('audit-list'), AUDITS, function (a) { return a.year + ' — Annual Audit Report'; });
+  renderList(document.getElementById('extra-list'), EXTRAS, function (e) { return e.title; });
+</script>
+</body>
+</html>
